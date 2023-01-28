@@ -8,22 +8,24 @@ using System.Collections.Generic;
 
 namespace Tarefas.DAO
 {
-    public class TarefaDAO
+    
+
+    public class TarefaDAO : ITarefaDAO
     {
         private string DataSourceFile => Environment.CurrentDirectory + "AppTarefasDB.sqlite";
-        public SQLiteConnection Connection => new SQLiteConnection("DataSource="+ DataSourceFile);
-        
+        public SQLiteConnection Connection => new SQLiteConnection("DataSource=" + DataSourceFile);
+
         public TarefaDAO()
         {
-            if(!File.Exists(DataSourceFile))
+            if (!File.Exists(DataSourceFile))
             {
                 CreateDatabase();
             }
         }
-        
+
         private void CreateDatabase()
         {
-            using(var con = Connection)
+            using (var con = Connection)
             {
                 con.Open();
                 con.Execute(
@@ -50,43 +52,58 @@ namespace Tarefas.DAO
                 );
             }
         }
-        
-        public List<TarefaDTO> Consultar(){
-            using(var con = Connection){
+
+        public List<TarefaDTO> Consultar()
+        {
+            using (var con = Connection)
+            {
                 con.Open();
                 var result = con.Query<TarefaDTO>(
                     @"SELECT Id, Titulo, Descricao, Concluida FROM Tarefa"
                 ).ToList();
                 return result;
-                
-            }}
-         public TarefaDTO Consultar(int id){
-            using(var con = Connection){
+
+            }
+        }
+        public TarefaDTO Consultar(int id)
+        {
+            using (var con = Connection)
+            {
                 con.Open();
                 TarefaDTO result = con.Query<TarefaDTO>
                 (
-                  @"SELECT Id, Titulo, Descricao, Concluida FROM Tarefa WHERE Id = @Id",new{id}
+                  @"SELECT Id, Titulo, Descricao, Concluida FROM Tarefa WHERE Id = @Id", new { id }
 
                 ).FirstOrDefault();
                 return result;
             }
         }
-         public void Atualizar(TarefaDTO tarefa){
-            using(var con = Connection){
+        public void Atualizar(TarefaDTO tarefa)
+        {
+            using (var con = Connection)
+            {
                 con.Open();
                 con.Execute(
                     @"UPDATE Tarefa SET Titulo = @Titulo, Descricao = @Descricao, Concluida = @Concluida WHERE Id = @ID;", tarefa
                 );
             }
-         }
-         
-         public void Excluir(int id){
-            using (var con = Connection){
+        }
+
+        public void Excluir(int id)
+        {
+            using (var con = Connection)
+            {
                 con.Open();
                 con.Execute(
-                    @"DELETE FROM Tarefa WHERE Id = @Id", new{id}
+                    @"DELETE FROM Tarefa WHERE Id = @Id", new { id }
                 );
             }
-         }
         }
     }
+}
+
+
+
+
+
+

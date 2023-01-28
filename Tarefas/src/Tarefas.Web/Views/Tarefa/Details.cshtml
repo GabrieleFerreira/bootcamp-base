@@ -1,4 +1,4 @@
-@model Tarefas.Web.Models.Tarefa
+@model Tarefas.Web.Models.TarefaViewModel
 
 <form asp-action="Create">
 
@@ -17,7 +17,7 @@
     <a asp-controller= "Tarefa" asp-action=" Index" asp-route-id="@Model.Id">Voltar</a>
     <input asp-for="Id" hidden/>
      <input asp-for="Concluida" hidden/>
-
+    
         
     <input type="submit" class="btn btn-primary" />
         
